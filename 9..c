@@ -1,0 +1,111 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+int precedence(char op) {
+    switch (op) {
+        case '+':
+        case '-':
+            return 1;
+        case '*':
+        case '/':
+            return 2;
+        case '^':
+            return 3;
+        default:
+            return 0;
+    }
+}
+
+char *infixToPostfix(char *exp) {
+    int size = strlen(exp), top = -1, index = 0;
+    char *operator = (char *)malloc(size * sizeof(char));
+    char *result = (char *)malloc(size * sizeof(char));
+
+    for (int i = 0; i < size; i++) {
+        char ch = exp[i];
+        if (isdigit(ch) || isalpha(ch)) {
+            result[index++] = ch;
+        } else if (ch == '(') {
+            operator[++top] = ch;
+        } else if (ch == ')') {
+            while (top != -1 && operator[top] != '(') {
+                result[index++] = operator[top--];
+            }
+            top--; 
+        } else {
+            while (top != -1 && precedence(ch) <= precedence(operator[top])) {
+                result[index++] = operator[top--];
+            }
+            operator[++top] = ch;
+        }
+    }
+    while (top != -1) {
+        result[index++] = operator[top--];
+    }
+    result[index] = '\0';
+
+    free(operator);
+    return result;
+}
+
+char* infixToPrefix(char* exp) {
+    int size = strlen(exp), top = -1, index = 0;
+    char* operators = (char*) malloc(size * sizeof(char));
+    char* result = (char*) malloc(size * sizeof(char));
+
+    for (int i = size - 1; i >= 0; i--) {
+        char ch = exp[i];
+        if (isdigit(ch) || isalpha(ch)) {
+            result[index++] = ch;
+        } else if (ch == ')') {
+            operators[++top] = ch;
+        } else if (ch == '(') {
+            while (top != -1 && operators[top] != ')') {
+                result[index++] = operators[top--];
+            }
+            top--;
+        } else {
+            while (top != -1 && precedence(ch) <= precedence(operators[top])) {
+                result[index++] = operators[top--];
+            }
+            operators[++top] = ch;
+        }
+    }
+    while (top != -1) {
+        result[index++] = operators[top--];
+    }
+    result[index] = '\0';
+
+    for (int i = 0; i < index / 2; i++) {
+        char temp = result[i];
+        result[i] = result[index - i - 1];
+        result[index - i - 1] = temp;
+    }
+
+    free(operators);
+    return result;
+}
+
+int main() {
+    char exp[100];
+    printf("Enter Infix expression: ");
+    fgets(exp, 100, stdin);
+
+    size_t len = strlen(exp);
+    if (len > 0 && exp[len - 1] == '\n') {
+        exp[len - 1] = '\0';
+    }
+
+    char* postfixResult = infixToPostfix(exp);
+    char* prefixResult = infixToPrefix(exp);
+
+    printf("Postfix form of Infix expression '%s' is '%s'\n", exp, postfixResult);
+    printf("Prefix form of Infix expression '%s' is '%s'\n", exp, prefixResult);
+
+    free(postfixResult);
+    free(prefixResult);
+
+    return 0;
+}
