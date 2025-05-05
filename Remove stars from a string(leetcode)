@@ -1,0 +1,18 @@
+char* removeStars(char* s) {
+ int i;
+ int len=strlen(s);
+char *stack=(char*)malloc(len+1);
+int top=-1;
+for(int i=0;i<len;i++){
+  char st=s[i] ;
+  if (st>=65 && st<=90 || st>=97 && st<=122){
+    stack[++top]=st;
+  }
+  else{
+      
+        top--;
+}
+}
+     stack[top + 1] = '\0';
+    return stack; 
+}
