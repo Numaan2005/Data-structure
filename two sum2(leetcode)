@@ -1,0 +1,21 @@
+int* twoSum(int* arr, int n, int m, int* returnSize) {
+        int i, j;
+      int* ret_arr = (int*)malloc(2 * sizeof(int));
+          for( i=0;i<n;i++){
+              for( j=i+1;j<n;j++){
+                 
+                 
+                          if(arr[i]+arr[j]==m){
+                            ret_arr[0]=i;
+                            ret_arr[1]=j;
+                  *returnSize = 2;
+                    return ret_arr;
+
+              }  
+              
+          }
+          }
+ *returnSize = 0;
+    free(ret_arr); // Free memory if no solution is found
+    return NULL; // Correct pointer return
+}
