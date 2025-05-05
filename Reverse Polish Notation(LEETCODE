@@ -1,0 +1,28 @@
+int top1=-1;
+int operand[10000];
+
+int evalRPN(char **exp,int size){  
+  
+  for(int i=0;i<size;i++){ // iteration from left to right
+    
+    if(strcmp(exp[i],"+")==0 || strcmp(exp[i],"-")==0 ||strcmp(exp[i],"*")==0 ||strcmp(exp[i],"/")==0||strcmp(exp[i],"^")==0){
+        int x=operand[top1--];
+        int y=operand[top1--];
+        int z;
+        if(strcmp(exp[i], "+")==0)
+            z = y+x;
+        else if(strcmp(exp[i], "-")==0)
+            z = y-x;
+        else if(strcmp(exp[i], "*")==0)
+            z = y*x;
+        else if(strcmp(exp[i], "/")==0)
+            z = y/x;
+        
+    operand[++top1]=z;
+    }
+    else{
+        operand[++top1] = atoi(exp[i]);
+    }
+  }
+  return operand[top1--];
+}
