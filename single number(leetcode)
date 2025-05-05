@@ -1,0 +1,24 @@
+int singleNumber(int* nums, int numsSize) {
+ int count [numsSize],temp;
+     for(int i=0;i<numsSize;i++){
+       count[i]=0;
+    }
+    for(int i=0;i<numsSize;i++){
+        for(int j=0;j<numsSize;j++){
+      if(i==j){
+          continue;
+     } 
+            if(nums[i]==nums[j])
+           count[i]++;
+    }
+    }
+     for(int i=0;i<numsSize;i++){
+       if(count[i]==0){
+           temp=i;
+           break;
+       }
+    }
+       return nums[temp];
+}
+    
+   
